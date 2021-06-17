@@ -15,31 +15,32 @@
 <body>
     <div id="wrapper">
         <div class="cover_photo">
-            <div class="navigator">
-                <ul class="Casting">
-                    <li><button>Parallel</button></li>
-                    <li><button>Oblique</button></li>
-                    <li><button>Perspective</button></li>
-                </ul>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                        <div class="navbar-nav">
-                            <input type="file" name="fileName" id="input-file">
-                            <button type="button" value="Open" id="open" onClick=drawF() class=button>Open</button>
-                        </div>
+            <div class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <input type="file" name="fileName" id="input-file">
+                        <button type="button" value="Open" id="open" onClick=drawF() class=button>Open</button>
                     </div>
-                </nav>
-                <ul class="Mirror">
-                    <li><button>MirrorX</button></li>
-                    <li><button>MirrorY</button></li>
-                    <li><button>MirrorZ</button></li>
-                </ul>
+                </div>
             </div>
         </div>
+        <ul class="casting">
+            <a>Casting:</a>
+            <li><button>Parallel</button></li>
+            <li><button>Oblique</button></li>
+            <li><button>Perspective</button></li>
+            <a>Mirror:</a>
+            <li><button>MirrorX</button></li>
+            <li><button>MirrorY</button></li>
+            <li><button>MirrorZ</button></li>
+        </ul>
+       
         <div class="canvas">
+            <div>
+            </div>
             <div class="zoomContainer">
-                <div class="zoom">+</div>
-                <div class="zoom">-</div>
+                <button class="zoom">+</button>
+                <button class="zoom">-</button>
             </div>
         </div>
     </div>
