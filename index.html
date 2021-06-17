@@ -14,51 +14,36 @@
 
 <body>
     <div id="wrapper">
-            <!-- <ul class="buttons-list">
-                <form enctype="multipart/form-data" action="/upload/image" method="post">
-                    <input id="image-file" type="file" />
-                </form>
-                <li><button>Scale</button></li>
-                <li><button>Rotate</button></li>
-                <li><button>Translation</button></li>
-                <li><button>Zoom</button></li>
-                <li><button>Mirror X</button></li>
-                <li><button>Mirror Y</button></li>
-                <li><button>Mirror Z</button></li>
-                <li><button>Clean</button></li>
-            </ul> -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <!-- <a class="navbar-brand" href="#">Navbar</a> -->
-                <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"> -->
-                <!-- <span class="navbar-toggler-icon"></span> -->
-                <!-- </button> -->
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <input type="file" name="fileName" id="input-file">
-                        <button type="button" value="Open" id="open" onClick=drawF() class=button>Open</button>
-    
-                        <!-- <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a> -->
-                        <!-- <a class="nav-item nav-link" href="#">Features</a>
-                        <a class="nav-item nav-link" href="#">Features</a>
-                        <a class="nav-item nav-link" href="#">Features</a>
-                        <a class="nav-item nav-link" href="#">Features</a>
-                        <a class="nav-item nav-link" href="#">Features</a> -->
-                        <!-- <a class="nav-item nav-link" href="#">Pricing</a> -->
-                        <!-- <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
+        <div class="cover_photo">
+            <div class="navigator">
+                <ul class="Casting">
+                    <li><button>Parallel</button></li>
+                    <li><button>Oblique</button></li>
+                    <li><button>Perspective</button></li>
+                </ul>
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <input type="file" name="fileName" id="input-file">
+                            <button type="button" value="Open" id="open" onClick=drawF() class=button>Open</button>
+                        </div>
                     </div>
-                </div>
-        </nav>
-        <!-- <div>
-            <label for="input-file">Specify a file:</label><br>
-            <input type="file" id="input-file">
-        </div> -->
-
-        <!-- <textarea id="content-target"></textarea> -->
-        <div class="container">
-            <canvas>
-            </canvas>
+                </nav>
+                <ul class="Mirror">
+                    <li><button>MirrorX</button></li>
+                    <li><button>MirrorY</button></li>
+                    <li><button>MirrorZ</button></li>
+                </ul>
+            </div>
+        </div>
+        <div class="canvas">
+            <div class="zoomContainer">
+                <div class="zoom">+</div>
+                <div class="zoom">-</div>
+            </div>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
