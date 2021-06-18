@@ -1,92 +1,10 @@
 
-var pointArray = []
-var cubeArray = []
-var pyramidArray = []
-var cube
-var cubeArrayLength = 0
-const organizeData = async () => {
-    var slice;
-    var file = document.getElementById('input-file').files;
-    if (!file.length) {
-        alert("Please select a file");
-        return;
-    }
-
-    file = file[0];
-    var fileReader = new FileReader();
-
-    fileReader.onloadend = await function (event) {
-        if (event.target.readyState == FileReader.DONE) {
-            var fileContent = fileReader.result;
-
-            if (!fileContent.length) {
-                alert("File is empty"); return;
-            }
-            console.log('fileContent:', fileContent)
-            var lines = fileContent.split("\n");
-            var j, k, t
-            for (let i = 0; i < lines.length; i++) {
-                var specificLine = fileContent.split('\n')[i]
-                if (specificLine.includes('point')) {
-                    j = i
-                } if (specificLine.includes('cube')) {
-                    k = i
-                }
-                if (specificLine.includes('pyramid')) {
-                    t = i
-                }
-            }
-            if (j === undefined && k === undefined && t === undefined) {
-                alert("There is no shape in the file"); return;
-            }
-            for (; j < k - 1; j++) {
-                var specificLine = fileContent.split('\n')[j + 1]
-                specificLine = specificLine.replace('(', '');
-                specificLine = specificLine.replace(')', '');
-                specificLine = specificLine.split(',')
-                pointArray.push({ line: j, value: specificLine })
-            }
-            console.log('pointArray:', pointArray)
-            for (; k < t - 1; k++) {
-                var specificLine = fileContent.split('\n')[k + 1]
-                specificLine = specificLine.replace('(', '');
-                specificLine = specificLine.replace(')', '');
-                specificLine = specificLine.split('-')
-                cubeArray.push({ line: k, value: specificLine })
-                cubeArrayLength = cubeArrayLength + 1
-            }
-            console.log('cubeArray:', cubeArray)
-            for (; t < lines.length - 1; t++) {
-                var specificLine = fileContent.split('\n')[t + 1]
-                specificLine = specificLine.replace('(', '');
-                specificLine = specificLine.replace(')', '');
-                specificLine = specificLine.split('-')
-                pyramidArray.push({ line: t, value: specificLine })
-            }
-            console.log('pyramidArray:', pyramidArray)
-        }
-    }
-
-    if (file.slice) {
-        slice = file.slice(0, file.size);
-    }
-    else if (file.webkitSlice) {
-        slice = file.webkitSlice(0, file.size);
-    }
-    else if (file.mozSlice) {
-        slice = file.mozSlice(0, file.size);
-    }
-    fileReader.readAsText(slice);
-    console.log('cubeArrayLength:', cubeArrayLength)
-    cube = await new Cube(0, 0, 400, 200);
-    await loop();
-
-}
-
-const Point3D = function (x, y, z) { this.x = x; this.y = y; this.z = z; };
 const Point2D = function (x, y) { this.x = x; this.y = y; };
 
+const Point3D = function (x, y, z) { this.x = x; this.y = y; this.z = z; };
+
 const Cube = function (x, y, z, size) {
+
     console.log('x, y, z, size', x, y, z, size)
 
     Point3D.call(this, x, y, z);
@@ -101,11 +19,7 @@ const Cube = function (x, y, z, size) {
     new Point3D(x + size, y - size, z + size),
     new Point3D(x + size, y + size, z + size),
     new Point3D(x - size, y + size, z + size)];
-    // for (let i = 0; i < cubeArray.length; i++) {
-    //     let faces = []
-    //     console.log('cubeArray[i]:', cubeArray[i])
-    // }
-    console.log('cubeArray:', cubeArray)
+
     this.faces = [[0, 1, 2, 3], [0, 4, 5, 1], [1, 5, 6, 2], [3, 2, 6, 7], [0, 3, 7, 4], [4, 7, 6, 5]];
 
 };
@@ -128,6 +42,7 @@ Cube.prototype = {
             p.z = z + this.z;
 
         }
+
     },
 
     rotateY: function (radian) {
@@ -153,30 +68,11 @@ Cube.prototype = {
 
 var context = document.querySelector("canvas").getContext("2d");
 var pointer = new Point2D(0, 0);
+var cube = new Cube(0, 0, 400, 200);
+console.log('context:', context)
 
 var height = document.documentElement.clientHeight;
 var width = document.documentElement.clientWidth;
-
-function project(points3d, width, height) {
-
-    var points2d = new Array(points3d.length);
-
-    var focal_length = 200;
-
-    for (let index = points3d.length - 1; index > -1; --index) {
-
-        let p = points3d[index];
-
-        let x = p.x * (focal_length / p.z) + width * 0.5;
-        let y = p.y * (focal_length / p.z) + height * 0.5;
-
-        points2d[index] = new Point2D(x, y);
-
-    }
-
-    return points2d;
-
-}
 
 function project(points3d, width, height) {
 
@@ -209,8 +105,9 @@ function loop() {
     context.canvas.height = height;
     context.canvas.width = width;
 
-    context.fillStyle = "rgba(168,110,144,0.800000011920929)";
+    context.fillStyle = "#ffffff";
     context.fillRect(0, 0, width, height);
+
     context.strokeStyle = "#ffffff";
 
     cube.rotateX(pointer.y * 0.0001);
@@ -243,11 +140,15 @@ function loop() {
             context.closePath();
             context.fill();
             context.stroke();
+
         }
+
+
     }
+
 }
 
-// loop();
+loop();
 
 window.addEventListener("click", (event) => {
 
@@ -255,3 +156,4 @@ window.addEventListener("click", (event) => {
     pointer.y = event.pageY - height * 0.5;
 
 });
+

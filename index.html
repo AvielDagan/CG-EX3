@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computer Graphics EX3</title>
     <link href="./includes/style.css" rel="stylesheet" type="text/css" />
-    <script src="includes/index.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-
 <body>
     <div id="wrapper">
         <div class="cover_photo">
@@ -19,9 +16,17 @@
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <input type="file" name="fileName" id="input-file">
-                        <button type="button" value="Open" id="open" onClick=drawF() class=button>Open</button>
+                        <button type="button" value="Open" id="open" onClick=organizeData() class=button>Open</button>
                     </div>
                 </div>
+            </div>
+        </div>
+        <canvas>
+            <div>
+            </div>
+            <div class="zoomContainer">
+                <button class="zoom">+</button>
+                <button class="zoom">-</button>
             </div>
         </div>
         <ul class="casting">
@@ -34,17 +39,7 @@
             <li><button>Y</button></li>
             <li><button>Z</button></li>
         </ul>
-       
-        <div class="canvas">
-            <div>
-            </div>
-            <div class="zoomContainer">
-                <button class="zoom">+</button>
-                <button class="zoom">-</button>
-            </div>
-        </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -54,6 +49,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+        <script src="includes/index.js"></script>
 </body>
 <footer>
 
