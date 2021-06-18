@@ -2,7 +2,7 @@
 var pointArray = []
 var cubeArray = []
 var pyramidArray = []
-var totalRes = []
+var totalRes =[]
 
 const organizeData = async () => {
     var slice;
@@ -44,7 +44,7 @@ const organizeData = async () => {
                 specificLine = specificLine.replace('(', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split(',')
-                pointArray.push({ line: j, value: specificLine })
+                pointArray.push( specificLine )
             }
             console.log('pointArray:', pointArray)
             for (; k < t - 1; k++) {
@@ -52,7 +52,7 @@ const organizeData = async () => {
                 specificLine = specificLine.replace('(', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split('-')
-                cubeArray.push({ line: k, value: specificLine })
+                cubeArray.push( specificLine )
             }
             console.log('cubeArray:', cubeArray)
             for (; t < lines.length - 1; t++) {
@@ -60,7 +60,7 @@ const organizeData = async () => {
                 specificLine = specificLine.replace('(', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split('-')
-                pyramidArray.push({ line: t, value: specificLine })
+                pyramidArray.push(specificLine )
             }
             console.log('pyramidArray:', pyramidArray)
         }
@@ -79,13 +79,11 @@ const organizeData = async () => {
     totalRes = [pointArray, cubeArray, pyramidArray]
     return totalRes;
 }
-
-async function showCube() {
+function showCube(shape) {
+    console.log("cube array size", shape.length)
     const Point3D = function (x, y, z) { this.x = x; this.y = y; this.z = z; };
     const Point2D = function (x, y) { this.x = x; this.y = y; };
-    console.log('calling');
-    const result = await organizeData();
-    console.log("cube array",result[1].length);
+   
     const Cube = function (x, y, z, size) {
 
         console.log('x, y, z, size', x, y, z, size)
@@ -106,7 +104,6 @@ async function showCube() {
         //     let faces = []
         //     console.log('cubeArray[i]:', cubeArray[i])
         // }
-        console.log('cubeArray:', cubeArray)
         this.faces = [[0, 1, 2, 3], [0, 4, 5, 1], [1, 5, 6, 2], [3, 2, 6, 7], [0, 3, 7, 4], [4, 7, 6, 5]];
 
     };
@@ -238,6 +235,9 @@ async function showCube() {
 }
 
 
-function check() {
-    showCube();
+async function check() {
+   var result = await organizeData ()
+   var shape = result[1]
+   console.log("shape",result[1])
+   showCube(shape);
 }
