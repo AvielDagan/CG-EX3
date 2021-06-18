@@ -2,7 +2,7 @@
 var pointArray = []
 var cubeArray = []
 var pyramidArray = []
-var totalRes =[]
+var totalRes = []
 
 const organizeData = async () => {
     var slice;
@@ -44,7 +44,7 @@ const organizeData = async () => {
                 specificLine = specificLine.replace('(', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split(',')
-                pointArray.push( specificLine )
+                pointArray.push(specificLine)
             }
             console.log('pointArray:', pointArray)
             for (; k < t - 1; k++) {
@@ -52,7 +52,7 @@ const organizeData = async () => {
                 specificLine = specificLine.replace('(', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split('-')
-                cubeArray.push( specificLine )
+                cubeArray.push(specificLine)
             }
             console.log('cubeArray:', cubeArray)
             for (; t < lines.length - 1; t++) {
@@ -60,7 +60,7 @@ const organizeData = async () => {
                 specificLine = specificLine.replace('(', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split('-')
-                pyramidArray.push(specificLine )
+                pyramidArray.push(specificLine)
             }
             console.log('pyramidArray:', pyramidArray)
         }
@@ -83,7 +83,7 @@ function showCube(shape) {
     console.log("cube array size", shape.length)
     const Point3D = function (x, y, z) { this.x = x; this.y = y; this.z = z; };
     const Point2D = function (x, y) { this.x = x; this.y = y; };
-   
+
     const Cube = function (x, y, z, size) {
 
         console.log('x, y, z, size', x, y, z, size)
@@ -236,8 +236,17 @@ function showCube(shape) {
 
 
 async function check() {
-   var result = await organizeData ()
-   var shape = result[1]
-   console.log("shape",result[1])
-   showCube(shape);
+    try {
+        var result = await organizeData()
+        setTimeout(function () {
+            var shape = result[1]
+            console.log("shape", result[1][1][1])
+            showCube(shape);
+        }, 1000);
+
+    }
+    catch (e) {
+        console.log('e:', e)
+    }
+
 }
