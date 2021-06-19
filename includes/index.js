@@ -384,16 +384,30 @@ function setCenter() {
 ** Function:zoom
 ** scale the image 
 ****************************************/
-function zoom() {
-    var zoomFactor = document.getElementById('zoom').value;
+function zoomIn() {
+    // var zoomFactor = document.getElementById('zoom').value;
     var oldCenter = centerPoint;
     for (var i = 0; i < coordX.length; i++) {
-        coordX[i] *= zoomFactor;
-        coordY[i] *= zoomFactor;
-        coordZ[i] *= zoomFactor;
+        coordX[i] *= 1.1;
+        coordY[i] *= 1.1;
+        coordZ[i] *= 1.1;
     }
     setCenter();
+    for (var i = 0; i < coordX.length; i++) {
+        coordX[i] -= centerPoint.x - oldCenter.x;
+        coordY[i] -= centerPoint.y - oldCenter.y;
+    }
+    drawshapesArray();
+}
 
+function zoomOut() {
+    var oldCenter = centerPoint;
+    for (var i = 0; i < coordX.length; i++) {
+        coordX[i] *= 0.9;
+        coordY[i] *= 0.9;
+        coordZ[i] *= 0.9;
+    }
+    setCenter();
     for (var i = 0; i < coordX.length; i++) {
         coordX[i] -= centerPoint.x - oldCenter.x;
         coordY[i] -= centerPoint.y - oldCenter.y;
