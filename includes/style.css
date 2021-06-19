@@ -50,7 +50,9 @@
 }
   .zoomContainer{
     width: 60px;
-    float: right;
+    /* float: right; */
+    position: absolute;
+    right: 0.5%;
   }
   .zoom {
     width: 50px;
