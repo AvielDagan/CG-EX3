@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,37 +10,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+
 <body>
     <div id="wrapper">
         <div class="cover_photo">
             <div class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <input type="file" name="fileName" id="input-file">
-                        <button type="button" value="Open" id="open" onClick=check() class=button>Open</button>
+
+                    <div class="file">
+                        <input type="file" name="fileName" id="fileID">
+                        <button type="button" value="Open" id="open" onClick=drawFile() class=button>Open</button>
                     </div>
+
                 </div>
             </div>
         </div>
-        <canvas>
-            <div>
-            </div>
-            <div class="zoomContainer">
-                <button class="zoom">+</button>
-                <button class="zoom">-</button>
-            </div>
+
+
+        <div class="zoomContainer">
+            <button class="zoom">+</button>
+            <button class="zoom">-</button>
         </div>
+
         <ul class="casting">
             <a>Casting:</a>
-            <li><button>Parallel</button></li>
-            <li><button>Oblique</button></li>
-            <li><button>Perspective</button></li>
+            <li><button onClick=projections(0)>Parallel</button></li>
+            <li><button onClick=projections(1)>Oblique</button></li>
+            <li><button onClick=projections(2)>Perspective</button></li>
             <a>Mirror:</a>
-            <li><button>X</button></li>
-            <li><button>Y</button></li>
-            <li><button>Z</button></li>
+            <li><button onClick=rotate(1)>X</button></li>
+            <li><button onClick=rotate(2)> Y</button></li>
+            <li><button onClick=rotate(3)>Z</button></li>
+            <li><button type="reset" value="Reset" onClick="history.go(0)">Reset</button></li>
         </ul>
     </div>
+    <section>
+        <canvas  id="main-canvas" width="994" height="600"/>
+    </section>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -49,7 +56,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-        <script src="includes/index.js"></script>
+    <script src="includes/index.js"></script>
 </body>
 <footer>
 
