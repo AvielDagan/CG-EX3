@@ -1,7 +1,7 @@
 var ctx;
 var canvasHeight;
 var canvasWidth;
-var colors = ["#000000", "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#00FFFF", "#FF00FF", "#C0C0C0"];
+var colors = ["#8814fc", "#b400cc", "#00FF00", "#b400cc", "#FFFF00", "#00FFFF", "#FF00FF", "#C0C0C0"];
 var project = 0;
 var pointArray = []
 
