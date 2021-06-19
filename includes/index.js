@@ -202,7 +202,6 @@ function drawFile() {
 
             var lines = fileContent.split("\n");
 
-            console.log('lines.length:', lines.length)
             var j, k, t
             var shapeIndex = 0
             for (let i = 0; i < lines.length; i++) {
@@ -225,16 +224,11 @@ function drawFile() {
                 specificLine = specificLine.replace('"', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split(',')
-                // console.log('specificLine[0]:', specificLine[0])
                 coordX.push(parseInt(specificLine[0]))
                 coordY.push(parseInt(specificLine[1]))
                 coordZ.push(parseInt(specificLine[2]))
                 pointArray.push(specificLine)
             }
-            console.log('coordX:', coordX)
-            console.log('coordY:', coordY)
-            console.log('coordZ:', coordZ)
-            // console.log('pointArray:', pointArray)
             var cube = new Shape(6);
             for (let count = 0; k < t - 1; k++) {
                 var specificLine = fileContent.split('\n')[k + 1]
@@ -242,23 +236,15 @@ function drawFile() {
                 specificLine = specificLine.replace('(', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split('-')
-                console.log('specificLine CUBE:', specificLine)
                 if (specificLine.length != 4) {
                     alert("Illegal input for cube");
                     return;
                 }
-                // for (let i = 0; i < specificLine.length; ++i) {
-                //     console.log('count:', count)
-                //     console.log('specificLine[i]:', specificLine[i])
-                // }
                 cube.setPoly(count, specificLine[0], specificLine[1], specificLine[2], specificLine[3]);
-                console.log('cube:', cube)
                 count++
-                // cubeArray.push(specificLine)
             }
             shapesArray[shapeIndex++] = cube;
 
-            // console.log('cubeArray:', cubeArray)
             var payramid=new Shape(4);
             for (let count = 0; t < lines.length - 1; t++) {
                 var specificLine = fileContent.split('\n')[t + 1]
@@ -270,10 +256,6 @@ function drawFile() {
                     alert("Illegal input for pyramid");
                     return;
                 }
-                // for (let i = 0; i < specificLine.length; ++i) {
-                //     console.log('count:', count)
-                //     console.log('specificLine[i]:', specificLine[i])
-                // }
                 payramid.setPoly(count, specificLine[0], specificLine[1], specificLine[2]);
                 console.log('payramid:', payramid)
                 count++
@@ -385,7 +367,6 @@ function setCenter() {
 ** scale the image 
 ****************************************/
 function zoomIn() {
-    // var zoomFactor = document.getElementById('zoom').value;
     var oldCenter = centerPoint;
     for (var i = 0; i < coordX.length; i++) {
         coordX[i] *= 1.1;
