@@ -79,8 +79,8 @@
     background: rgba(171,134,181,1);
     cursor: pointer;
   }
-  a{
-    margin-top: 50px;
+  .mirror{
+    margin-top: 10px;
   }
   .zoom {
     width: 50px;
