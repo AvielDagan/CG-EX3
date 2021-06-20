@@ -1,4 +1,8 @@
-var context ,height ,width;
+// Submitted by‫:‬
+// Chen Gutman 205616147
+// Avital Kahani 205688666
+// Aviel Dagan 203345061
+var context ,height ,width
 var cast = 0;
 var pointArray = []
 
