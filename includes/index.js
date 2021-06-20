@@ -1,7 +1,4 @@
-var context;
-var canvasHeight;
-var canvasWidth;
-var colors = ['#8814fc', '#ca03fc', '#00ffd9', '#b400cc', '#ba54a2', '#ff409c', '#FF00FF', '#995eff'];
+var context ,height ,width;
 var cast = 0;
 var pointArray = []
 
@@ -106,18 +103,18 @@ class Polygon {
 //If 4 - PYRAMID
 
 class Shape {
-    constructor(face) {
-        this.face = face;
-        this.polygons = new Array(face);
+    constructor(faces) {
+        this.faces = faces;
+        this.polygons = new Array(faces);
 
-        for (var i = 0; i < face; i++)
-            this.polygons[i] = new Polygon((face / 2) + 1);
+        for (var i = 0; i < faces; i++)
+            this.polygons[i] = new Polygon((faces / 2) + 1);
         //Cube
-        if (face == 6)
-            this.setPoly = cubeVertexPoints;
+        if (faces == 6)
+            this.setPolygon = cubeVertexPoints;
         //Pyramid
         else
-            this.setPoly = pyramidVertexPoints;
+            this.setPolygon = pyramidVertexPoints;
     }
     
     //Change the visibility property of each polygon at the shape
@@ -128,7 +125,8 @@ class Shape {
     }
     //Draw the polygons at the shape
     drawObj() {
-        for (var i = 0; i < this.face; i++) {
+        var colors = ['#8814fc', '#ca03fc', '#00ffd9', '#b400cc', '#ba54a2', '#ff409c', '#FF00FF', '#995eff'];
+        for (var i = 0; i < this.faces; i++) {
             if (this.polygons[i].visibility < 0)
                 this.polygons[i].drawPolygon(colors[i]);
         }
@@ -156,8 +154,8 @@ function pyramidVertexPoints(index, a, b, c) {
 //Open canvas and get the size of it when the page load is done
 window.onload = function () {
     var canvas = document.getElementById('canvas-container');
-    canvasHeight = canvas.height;
-    canvasWidth = canvas.width;
+    height = canvas.height;
+    width = canvas.width;
     if (canvas && canvas.getContext) {
         var contextObj = canvas.getContext('2d');
         if (contextObj)
@@ -226,7 +224,7 @@ function openFile() {
                     alert('Illegal input for cube');
                     return;
                 }
-                cube.setPoly(count, specificLine[0], specificLine[1], specificLine[2], specificLine[3]);
+                cube.setPolygon(count, specificLine[0], specificLine[1], specificLine[2], specificLine[3]);
                 count++
             }
             shapesArray[shapeIndex++] = cube;
@@ -242,7 +240,7 @@ function openFile() {
                     alert('Illegal input for pyramid');
                     return;
                 }
-                payramid.setPoly(count, specificLine[0], specificLine[1], specificLine[2]);
+                payramid.setPolygon(count, specificLine[0], specificLine[1], specificLine[2]);
                 count++
             }
             shapesArray[shapeIndex++] = payramid;
@@ -308,8 +306,8 @@ function rotate(coordinateSystem) {
 
 //Draw the shapes
 function drawShapes() {
-    image();
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
+    centerImage();
+    context.clearRect(0, 0, width, height);
     for (var i = 0; i < shapesArray.length; i++) {
         shapesArray[i].setVisibilityShape();
         shapesArray[i].castShape();
@@ -318,9 +316,9 @@ function drawShapes() {
 }
 
 //Fit the shapes at the center of the screen
-function image() {
+function centerImage() {
     center();
-    var point = new Point(canvasWidth / 2, canvasHeight / 2, 150);
+    var point = new Point(width / 2, height / 2, 150);
     for (var i = 0; i < xArray.length; i++) {
         xArray[i] += point.x - centerPoint.x;
         yArray[i] += point.y - centerPoint.y;
