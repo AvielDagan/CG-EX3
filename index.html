@@ -31,19 +31,19 @@
         </div>
         <ul class="casting">
             <a>Casting:</a>
-            <li><button onClick=projections(0)>Parallel</button></li>
-            <li><button onClick=projections(1)>Oblique</button></li>
-            <li><button onClick=projections(2)>Perspective</button></li>
-            <div class="mirror"><a >Mirror:</a></div>
-            <li><input type="range" min="1" max="100" value="45" name ="protractor" class="slider" id="protractor"></li>
-            <li><button onClick=rotate(1)>X</button></li>
-            <li><button onClick=rotate(2)> Y</button></li>
-            <li><button onClick=rotate(3)>Z</button></li>
+            <li><button onClick=selectedCast(0)>Parallel</button></li>
+            <li><button onClick=selectedCast(1)>Oblique</button></li>
+            <li><button onClick=selectedCast(2)>Perspective</button></li>
+            <div class="mirror"><a>Mirror:</a></div>
+            <li><input type="range" min="1" max="100" value="45" name="protractor" class="slider" id="protractor"></li>
+            <li><button onClick="rotate('x')">X</button></li>
+            <li><button onClick="rotate('y')"> Y</button></li>
+            <li><button onClick="rotate('z')">Z</button></li>
             <li><button type="reset" value="Reset" onClick="history.go(0)">Reset</button></li>
         </ul>
     </div>
     <section>
-        <canvas  id="main-canvas" width="1000" height="550"></canvas>
+        <canvas id="canvas-container" width="1000" height="550"></canvas>
     </section>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -57,7 +57,6 @@
     <script src="includes/index.js"></script>
 </body>
 <footer>
-
 </footer>
 
 </html>
