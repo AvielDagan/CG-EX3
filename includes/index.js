@@ -1,167 +1,156 @@
 var context;
 var canvasHeight;
 var canvasWidth;
-var colors = ['#8814fc', '#b400cc', '#00ffd9', '#b400cc', '#ba54a2', '#ff409c', '#FF00FF', '#995eff'];
+var colors = ['#8814fc', '#ca03fc', '#00ffd9', '#b400cc', '#ba54a2', '#ff409c', '#FF00FF', '#995eff'];
 var cast = 0;
 var pointArray = []
 
 //Array of the points devided by X Y and Z
-var xArray = new Array(), yArray = new Array(), zArray = new Array();
-
+var xArray = new Array()
+var yArray = new Array()
+var zArray = new Array();
 
 //Array of shapes
 var shapesArray = new Array();
 
 //Class Point
-function Point(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+class Point {
+    constructor(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 }
+
 var minPoint = new Point(0, 0, 0);
 var maxPoint = new Point(0, 0, 0);
 var centerPoint = new Point(0, 0, 0);
-
-//Polygon visibility
-function setVisibility() {
-    var Ax = xArray[this.points[0]] - xArray[this.points[1]];
-    var Ay = yArray[this.points[0]] - yArray[this.points[1]];
-    var Az = zArray[this.points[0]] - zArray[this.points[1]];
-
-    var Bx = xArray[this.points[2]] - xArray[this.points[1]];
-    var By = yArray[this.points[2]] - yArray[this.points[1]];
-    var Bz = zArray[this.points[2]] - zArray[this.points[1]];
-
-    //Vector
-    var normalX = (Ay * Bz) - (Az * By);
-    var normalY = (Az * Bx) - (Ax * Bz);
-    var normalZ = (Ax * By) - (Ay * Bx);
-    //Scalar with vertex
-    this.visibility = normalX * 100 + normalY * 100 + normalZ * (-200);
-}
-
-
-//Draw the picked polygon
-function drawPolygon(color) {
-    context.fillStyle = color;
-    context.beginPath();
-
-    context.moveTo(this.pointValue[0].x, this.pointValue[0].y);
-    for (var i = 1; i < this.pointValue.length; i++)
-        context.lineTo(this.pointValue[i].x, this.pointValue[i].y);
-
-    context.lineTo(this.pointValue[0].x, this.pointValue[0].y);
-
-    context.fill();
-    context.closePath();
-}
-
 //Class Polygon
-function polygon(size) {
+class Polygon {
+    constructor(size) {
+        this.visibility = 0;
+        this.size = size;
+        this.points = new Array(size);
+        this.pointValue = new Array(size);
+        for (var i = 0; i < size; i++)
+            this.pointValue[i] = new Point(0, 0);
+    }
+    //Polygon visibility
+    setVisibility() {
+        var Ax = xArray[this.points[0]] - xArray[this.points[1]];
+        var Ay = yArray[this.points[0]] - yArray[this.points[1]];
+        var Az = zArray[this.points[0]] - zArray[this.points[1]];
 
-    this.visibility = 0;
-    this.size = size;
-    this.points = new Array(size);
-    this.pointValue = new Array(size);
-    for (var i = 0; i < size; i++)
-        this.pointValue[i] = new Point(0, 0);
+        var Bx = xArray[this.points[2]] - xArray[this.points[1]];
+        var By = yArray[this.points[2]] - yArray[this.points[1]];
+        var Bz = zArray[this.points[2]] - zArray[this.points[1]];
 
-    this.setVisibility = setVisibility;
-    this.draw = drawPolygon;
-    this.casting = casting;
-}
-
-//Cast the polygon on the screen by the chosen option:
-//Parallel, Oblique or Perspective
-function casting() {
-    var temp;
-
-    for (var j = 0; j < this.size; j++) {
-        var i = this.points[j];
-        temp = xArray[i];
-
-        //Parallel casting
-        if (cast == 0) {
-            this.pointValue[j].x = xArray[i];
-            this.pointValue[j].y = yArray[i];
-        }
-        //Oblique casting
-        if (cast == 1) {
-            this.pointValue[j].x = Math.round(xArray[i] + zArray[i] * Math.cos(Math.PI * (45 / 180)));
-            this.pointValue[j].y = Math.round(yArray[i] + zArray[i] * Math.sin(Math.PI * (45 / 180)));
-        }
-        //Perspective casting
-        if (cast == 2) {
-            this.pointValue[j].x = xArray[i] + (zArray[i] / 10);
-            this.pointValue[j].y = yArray[i] + (zArray[i] / 10);
-        }
-        if (!temp) {
-            this.pointValue[j].x = shapesArray[0].polygons[3].pointValue[2].x;
-            this.pointValue[j].y = shapesArray[0].polygons[3].pointValue[2].y;
-        }
+        //Vector
+        var normalX = (Ay * Bz) - (Az * By);
+        var normalY = (Az * Bx) - (Ax * Bz);
+        var normalZ = (Ax * By) - (Ay * Bx);
+        //Scalar with vertex
+        this.visibility = normalX * 100 + normalY * 100 + normalZ * (-200);
     }
 
+    //Draw the picked polygon
+    drawPolygon(color) {
+        context.fillStyle = color;
+        context.beginPath();
+
+        context.moveTo(this.pointValue[0].x, this.pointValue[0].y);
+        for (var i = 1; i < this.pointValue.length; i++)
+            context.lineTo(this.pointValue[i].x, this.pointValue[i].y);
+
+        context.lineTo(this.pointValue[0].x, this.pointValue[0].y);
+
+        context.fill();
+        context.closePath();
+    }
+
+    //Cast the polygon on the screen by the chosen option:
+    //Parallel, Oblique or Perspective
+    casting() {
+        var temp;
+
+        for (var j = 0; j < this.size; j++) {
+            var i = this.points[j];
+            temp = xArray[i];
+
+            //Parallel casting
+            if (cast == 0) {
+                this.pointValue[j].x = xArray[i];
+                this.pointValue[j].y = yArray[i];
+            }
+            //Oblique casting
+            if (cast == 1) {
+                this.pointValue[j].x = Math.round(xArray[i] + zArray[i] * Math.cos(Math.PI * (45 / 180)));
+                this.pointValue[j].y = Math.round(yArray[i] + zArray[i] * Math.sin(Math.PI * (45 / 180)));
+            }
+            //Perspective casting
+            if (cast == 2) {
+                this.pointValue[j].x = xArray[i] + (zArray[i] / 10);
+                this.pointValue[j].y = yArray[i] + (zArray[i] / 10);
+            }
+            if (!temp) {
+                this.pointValue[j].x = shapesArray[0].polygons[3].pointValue[2].x;
+                this.pointValue[j].y = shapesArray[0].polygons[3].pointValue[2].y;
+            }
+        }
+    }
 }
 
 //Class Shape
 //Get the number of faces and draw the correct shape by the number of faces
 //If 6 - CUBE
 //If 4 - PYRAMID
-function Shape(face) {
 
-    this.face = face;
-    this.polygons = new Array(face);
+class Shape {
+    constructor(face) {
+        this.face = face;
+        this.polygons = new Array(face);
 
-    for (var i = 0; i < face; i++)
-        this.polygons[i] = new polygon((face / 2) + 1);
-    //Cube
-    if (face == 6)
-        this.setPoly = cubeVertexPoints;
-    //Pyramid
-    else
-        this.setPoly = pyramidVertexPoints;
-    this.draw = drawObject;
-    this.setVisibility = setVisibilityShape;
-    this.casts = castShape;
-
+        for (var i = 0; i < face; i++)
+            this.polygons[i] = new Polygon((face / 2) + 1);
+        //Cube
+        if (face == 6)
+            this.setPoly = cubeVertexPoints;
+        //Pyramid
+        else
+            this.setPoly = pyramidVertexPoints;
+    }
+    
+    //Change the visibility property of each polygon at the shape
+    setVisibilityShape() {
+        for (var i in this.polygons) {
+            this.polygons[i].setVisibility();
+        }
+    }
+    //Draw the polygons at the shape
+    drawObj() {
+        for (var i = 0; i < this.face; i++) {
+            if (this.polygons[i].visibility < 0)
+                this.polygons[i].drawPolygon(colors[i]);
+        }
+    }
+    //Projcets shapes
+    castShape() {
+        for (var i in this.polygons) {
+            this.polygons[i].casting();
+        }
+    }
 }
 
+
+
 //Set the cube vertex points
-function cubeVertexPoints(i, a, b, c, d) {
-    this.polygons[i].points[0] = a;
-    this.polygons[i].points[1] = b;
-    this.polygons[i].points[2] = c;
-    this.polygons[i].points[3] = d;
+function cubeVertexPoints(index, a, b, c, d) {
+    this.polygons[index].points = [a, b, c, d];
 }
 
 //Set the pyramid vertex points
-function pyramidVertexPoints(i, a, b, c) {
-    this.polygons[i].points[0] = a;
-    this.polygons[i].points[1] = b;
-    this.polygons[i].points[2] = c;
-}
-
-//Change the visibility property of each polygon at the shape
-function setVisibilityShape() {
-    for (i in this.polygons) {
-        this.polygons[i].setVisibility();
-    }
-}
-
-
-//Draw the polygons at the shape
-function drawObject() {
-    for (var i = 0; i < this.face; i++) {
-        if (this.polygons[i].visibility < 0)
-            this.polygons[i].draw(colors[i]);
-    }
-}
-
-//Projcets shapes
-function castShape() {
-    for (i in this.polygons) {
-        this.polygons[i].casting();
-    }
+function pyramidVertexPoints(index, a, b, c) {
+    this.polygons[index].points = [a, b, c]
 }
 
 //Open canvas and get the size of it when the page load is done
@@ -319,17 +308,17 @@ function rotate(coordinateSystem) {
 
 //Draw the shapes
 function drawShapes() {
-    fitImage();
+    image();
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     for (var i = 0; i < shapesArray.length; i++) {
-        shapesArray[i].setVisibility();
-        shapesArray[i].casts();
-        shapesArray[i].draw();
+        shapesArray[i].setVisibilityShape();
+        shapesArray[i].castShape();
+        shapesArray[i].drawObj();
     }
 }
 
 //Fit the shapes at the center of the screen
-function fitImage() {
+function image() {
     center();
     var point = new Point(canvasWidth / 2, canvasHeight / 2, 150);
     for (var i = 0; i < xArray.length; i++) {
@@ -338,18 +327,6 @@ function fitImage() {
         zArray[i] += point.z - centerPoint.z;
     }
     center();
-}
-
-function center() {
-    minPoint.x = Math.min.apply(0, xArray);
-    minPoint.y = Math.min.apply(0, yArray);
-    minPoint.z = Math.min.apply(0, zArray);
-    maxPoint.x = Math.max.apply(0, xArray);
-    maxPoint.y = Math.max.apply(0, yArray);
-    maxPoint.z = Math.max.apply(0, zArray);
-    centerPoint.x = Math.round(maxPoint.x - ((maxPoint.x - minPoint.x) / 2));
-    centerPoint.y = Math.round(maxPoint.y - ((maxPoint.y - minPoint.y) / 2));
-    centerPoint.z = Math.round(maxPoint.z - ((maxPoint.z - minPoint.z) / 2));
 }
 
 //Active after pressing the + and - buttons.
@@ -385,4 +362,17 @@ function zoomOut() {
         yArray[i] -= centerPoint.y - oldCenter.y;
     }
     drawShapes();
+}
+
+//A function that determines the point center of the shape
+function center() {
+    minPoint.x = Math.min.apply(0, xArray);
+    minPoint.y = Math.min.apply(0, yArray);
+    minPoint.z = Math.min.apply(0, zArray);
+    maxPoint.x = Math.max.apply(0, xArray);
+    maxPoint.y = Math.max.apply(0, yArray);
+    maxPoint.z = Math.max.apply(0, zArray);
+    centerPoint.x = Math.round(maxPoint.x - ((maxPoint.x - minPoint.x) / 2));
+    centerPoint.y = Math.round(maxPoint.y - ((maxPoint.y - minPoint.y) / 2));
+    centerPoint.z = Math.round(maxPoint.z - ((maxPoint.z - minPoint.z) / 2));
 }
