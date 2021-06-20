@@ -22,8 +22,6 @@ var minPoint = new Point(0, 0, 0);
 var maxPoint = new Point(0, 0, 0);
 var centerPoint = new Point(0, 0, 0);
 
-
-
 //Polygon visibility
 function setVisibility() {
     var Ax = xArray[this.points[0]] - xArray[this.points[1]];
