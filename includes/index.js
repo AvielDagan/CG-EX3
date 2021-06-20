@@ -1,13 +1,13 @@
 var ctx;
 var canvasHeight;
 var canvasWidth;
-var colors = ["#8814fc", "#b400cc", "#00FF00", "#b400cc", "#FFFF00", "#00FFFF", "#FF00FF", "#C0C0C0"];
+var colors = ["#8814fc", "#b400cc", "#00ffd9", "#b400cc", "#ba54a2", "#ff409c", "#FF00FF", "#995eff"];
 var project = 0;
 var pointArray = []
 
 
-var coordX = new Array(), coordY = new Array(), coordZ = new Array(); // arrays for X ,Y,Z coordinations
-var shapesArray = new Array(); //  array of shapes  
+var xArray = new Array(), yArray = new Array(), zArray = new Array(); 
+var shapesArray = new Array(); //  insert all the shapes to array 
 
 function Point(x, y, z) //point class
 {
@@ -30,7 +30,7 @@ function polygon(size) {
         this.pointValue[i] = new Point(0, 0);
 
     this.setVisibility = setVisibility;
-    this.draw = drawPoly;
+    this.draw = createPolygon;
     this.projction = projction;
 }
 /*************************************
@@ -39,13 +39,13 @@ function polygon(size) {
 **negative -> visible
 *************************************/
 function setVisibility() {
-    var Ax = coordX[this.points[0]] - coordX[this.points[1]];
-    var Ay = coordY[this.points[0]] - coordY[this.points[1]];
-    var Az = coordZ[this.points[0]] - coordZ[this.points[1]];
+    var Ax = xArray[this.points[0]] - xArray[this.points[1]];
+    var Ay = yArray[this.points[0]] - yArray[this.points[1]];
+    var Az = zArray[this.points[0]] - zArray[this.points[1]];
 
-    var Bx = coordX[this.points[2]] - coordX[this.points[1]];
-    var By = coordY[this.points[2]] - coordY[this.points[1]];
-    var Bz = coordZ[this.points[2]] - coordZ[this.points[1]];
+    var Bx = xArray[this.points[2]] - xArray[this.points[1]];
+    var By = yArray[this.points[2]] - yArray[this.points[1]];
+    var Bz = zArray[this.points[2]] - zArray[this.points[1]];
 
     //vector  product
     var normalX = (Ay * Bz) - (Az * By);
@@ -56,10 +56,10 @@ function setVisibility() {
 }
 
 /***************************************
-    function: drawPoly
+    function: createPolygon
     draw the current polygon	
 ***************************************/
-function drawPoly(clr) {
+function createPolygon(clr) {
     ctx.fillStyle = clr;
     ctx.beginPath();
 
@@ -83,18 +83,18 @@ function projction() {
 
     for (var j = 0; j < this.size; j++) {
         var i = this.points[j];
-        temp = coordX[i];
+        temp = xArray[i];
         if (project == 0) {//paraller projction
-            this.pointValue[j].x = coordX[i];
-            this.pointValue[j].y = coordY[i];
+            this.pointValue[j].x = xArray[i];
+            this.pointValue[j].y = yArray[i];
         }
         if (project == 1) { //cabinet projction
-            this.pointValue[j].x = Math.round(coordX[i] + coordZ[i] * Math.cos(Math.PI * (45 / 180)));
-            this.pointValue[j].y = Math.round(coordY[i] + coordZ[i] * Math.sin(Math.PI * (45 / 180)));
+            this.pointValue[j].x = Math.round(xArray[i] + zArray[i] * Math.cos(Math.PI * (45 / 180)));
+            this.pointValue[j].y = Math.round(yArray[i] + zArray[i] * Math.sin(Math.PI * (45 / 180)));
         }
         if (project == 2) {//prespctive projction
-            this.pointValue[j].x = coordX[i] + (coordZ[i] / 10);
-            this.pointValue[j].y = coordY[i] + (coordZ[i] / 10);
+            this.pointValue[j].x = xArray[i] + (zArray[i] / 10);
+            this.pointValue[j].y = yArray[i] + (zArray[i] / 10);
         }
         if (!temp) {
             this.pointValue[j].x = shapesArray[0].polys[3].pointValue[2].x;
@@ -160,10 +160,8 @@ function drawObject() {
 function projctShap() {
     for (i in this.polys) { this.polys[i].projction(); }
 }
-/****************Programe functions**************************************/
 
-
-//on loed open canvas and get canvas size
+/**********on loed open canvas and get canvas size**********/
 window.onload = function () {
     var canvas = document.getElementById("main-canvas");
     canvasHeight = canvas.height;
@@ -175,17 +173,14 @@ window.onload = function () {
     }
 }
 
-/******************************************
-** Function:drawFile
-**Opens a file and draws its content
-****************************************/
+/**********Opens the file input and draw the cube and pyramid**********/
 
-function drawFile() {
+function openFile() {
     var slice;
-    var file = document.getElementById('input-file').files;
+    var file = document.getElementById('fileOpen').files;
 
     if (!file.length) {
-        alert("Please select a file");
+        alert("No file selected!");
         return;
     }
 
@@ -224,9 +219,9 @@ function drawFile() {
                 specificLine = specificLine.replace('"', '');
                 specificLine = specificLine.replace(')', '');
                 specificLine = specificLine.split(',')
-                coordX.push(parseInt(specificLine[0]))
-                coordY.push(parseInt(specificLine[1]))
-                coordZ.push(parseInt(specificLine[2]))
+                xArray.push(parseInt(specificLine[0]))
+                yArray.push(parseInt(specificLine[1]))
+                zArray.push(parseInt(specificLine[2]))
                 pointArray.push(specificLine)
             }
             var cube = new Shape(6);
@@ -284,34 +279,34 @@ function projections(n) {
 ****************************************/
 function rotate(n) {
 
-    var angle = document.getElementById('angle').value;;
-    angle = angle * (Math.PI / 180); //Radians
+    var protractor = document.getElementById('protractor').value;;
+    protractor = protractor * (Math.PI / 180); 
     var tempX;
     var tempY;
 
     switch (n) {
         case 1://Rotation in X coordination
             {
-                for (var i = 0; i < coordX.length; i++) {
-                    tempY = coordY[i];
-                    coordY[i] = coordY[i] * Math.cos(angle) - coordZ[i] * Math.sin(angle);
-                    coordZ[i] = tempY * Math.sin(angle) + coordZ[i] * Math.cos(angle);
+                for (var i = 0; i < xArray.length; i++) {
+                    tempY = yArray[i];
+                    yArray[i] = yArray[i] * Math.cos(protractor) - zArray[i] * Math.sin(protractor);
+                    zArray[i] = tempY * Math.sin(protractor) + zArray[i] * Math.cos(protractor);
                 }
             } break;
         case 2://Rotation in Y coordination
             {
-                for (var i = 0; i < coordY.length; i++) {
-                    tempX = coordX[i];
-                    coordX[i] = coordX[i] * Math.cos(angle) + coordZ[i] * Math.sin(angle);
-                    coordZ[i] = -tempX * Math.sin(angle) + coordZ[i] * Math.cos(angle);
+                for (var i = 0; i < yArray.length; i++) {
+                    tempX = xArray[i];
+                    xArray[i] = xArray[i] * Math.cos(protractor) + zArray[i] * Math.sin(protractor);
+                    zArray[i] = -tempX * Math.sin(protractor) + zArray[i] * Math.cos(protractor);
                 }
             } break;
         case 3://Rotation in Z coordination
             {
-                for (var i = 0; i < coordZ.length; i++) {
-                    tempX = coordX[i];
-                    coordX[i] = coordX[i] * Math.cos(angle) - coordY[i] * Math.sin(angle);
-                    coordY[i] = tempX * Math.sin(angle) + coordY[i] * Math.cos(angle);
+                for (var i = 0; i < zArray.length; i++) {
+                    tempX = xArray[i];
+                    xArray[i] = xArray[i] * Math.cos(protractor) - yArray[i] * Math.sin(protractor);
+                    yArray[i] = tempX * Math.sin(protractor) + yArray[i] * Math.cos(protractor);
                 }
             } break;
 
@@ -337,61 +332,55 @@ function drawshapesArray() {
 ** Fit the image to the screen size
 ****************************************/
 function fitImage() {
-    setCenter();
+    center();
     var point = new Point(canvasWidth / 2, canvasHeight / 2, 150);
-    for (var i = 0; i < coordX.length; i++) {
-        coordX[i] += point.x - centerPoint.x;
-        coordY[i] += point.y - centerPoint.y;
-        coordZ[i] += point.z - centerPoint.z;
+    for (var i = 0; i < xArray.length; i++) {
+        xArray[i] += point.x - centerPoint.x;
+        yArray[i] += point.y - centerPoint.y;
+        zArray[i] += point.z - centerPoint.z;
     }
-    setCenter();
+    center();
 }
-/******************************************
-** Function:setCenter
-** Update coordinates values
-** the nini' nax' and center
-****************************************/
-function setCenter() {
-    maxPoint.x = Math.max.apply(0, coordX);
-    maxPoint.y = Math.max.apply(0, coordY);
-    maxPoint.z = Math.max.apply(0, coordZ);
-    minPoint.x = Math.min.apply(0, coordX);
-    minPoint.y = Math.min.apply(0, coordY);
-    minPoint.z = Math.min.apply(0, coordZ);
+
+function center() {
+    minPoint.x = Math.min.apply(0, xArray);
+    minPoint.y = Math.min.apply(0, yArray);
+    minPoint.z = Math.min.apply(0, zArray);
+    maxPoint.x = Math.max.apply(0, xArray);
+    maxPoint.y = Math.max.apply(0, yArray);
+    maxPoint.z = Math.max.apply(0, zArray);
     centerPoint.x = Math.round(maxPoint.x - ((maxPoint.x - minPoint.x) / 2));
     centerPoint.y = Math.round(maxPoint.y - ((maxPoint.y - minPoint.y) / 2));
     centerPoint.z = Math.round(maxPoint.z - ((maxPoint.z - minPoint.z) / 2));
 }
-/******************************************
-** Function:zoom
-** scale the image 
-****************************************/
+ /**********two function zoom in and zoom out**********/
+ /**********Active after pressing the + and - buttons.**********/
 function zoomIn() {
     var oldCenter = centerPoint;
-    for (var i = 0; i < coordX.length; i++) {
-        coordX[i] *= 1.1;
-        coordY[i] *= 1.1;
-        coordZ[i] *= 1.1;
+    for (var i = 0; i < xArray.length; i++) {
+        xArray[i] *= 1.1;
+        yArray[i] *= 1.1;
+        zArray[i] *= 1.1;
     }
-    setCenter();
-    for (var i = 0; i < coordX.length; i++) {
-        coordX[i] -= centerPoint.x - oldCenter.x;
-        coordY[i] -= centerPoint.y - oldCenter.y;
+    center();
+    for (var i = 0; i < xArray.length; i++) {
+        xArray[i] -= centerPoint.x - oldCenter.x;
+        yArray[i] -= centerPoint.y - oldCenter.y;
     }
     drawshapesArray();
 }
 
 function zoomOut() {
     var oldCenter = centerPoint;
-    for (var i = 0; i < coordX.length; i++) {
-        coordX[i] *= 0.9;
-        coordY[i] *= 0.9;
-        coordZ[i] *= 0.9;
+    for (var i = 0; i < xArray.length; i++) {
+        xArray[i] *= 0.9;
+        yArray[i] *= 0.9;
+        zArray[i] *= 0.9;
     }
-    setCenter();
-    for (var i = 0; i < coordX.length; i++) {
-        coordX[i] -= centerPoint.x - oldCenter.x;
-        coordY[i] -= centerPoint.y - oldCenter.y;
+    center();
+    for (var i = 0; i < xArray.length; i++) {
+        xArray[i] -= centerPoint.x - oldCenter.x;
+        yArray[i] -= centerPoint.y - oldCenter.y;
     }
     drawshapesArray();
 }
